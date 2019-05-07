@@ -1,0 +1,28 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: dev-deployment-1
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: dev-app
+    spec:
+      containers:
+      - image: gcr.io/devops-tutorial-project-dd/dev-app-image:v3
+        imagePullPolicy: Always
+        name: dev-app-container
+        ports:
+        - containerPort: 6006
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - name: app-config-volume
+          mountPath: /app/config
+      volumes:
+      - name: app-config-volume
+        configMap:
+          # Provide the name of the ConfigMap containing the files you want
+          # to add to the container
+          name: dev-app-config
